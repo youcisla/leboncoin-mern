@@ -5,9 +5,6 @@ const createAd = async (req, res) => {
     const { title, description, category, price } = req.body;
     const userId = req.userId;
 
-    console.log("Request Body:", req.body);
-    console.log("Uploaded File:", req.file);
-
     if (!userId) {
       return res.status(400).json({ error: "User ID is missing. Please ensure you are authenticated." });
     }
@@ -45,9 +42,7 @@ const createAd = async (req, res) => {
 const getAllAds = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log("Fetching ads for userId:", userId); // Debugging log
     const ads = await Ad.find({ author: userId }).sort({ createdAt: -1 });
-    console.log("Fetched ads:", ads); // Debugging log
     res.json(ads);
   } catch (error) {
     console.error("Error in getAllAds:", error.stack);
@@ -61,18 +56,11 @@ const updateAd = async (req, res) => {
     const { title, description, category, price } = req.body;
     const userId = req.userId;
 
-    console.log("Request Params (ID):", id);
-    console.log("Request Body:", req.body);
-    console.log("Request File:", req.file);
-
     const ad = await Ad.findById(id);
 
     if (!ad) {
       return res.status(404).json({ error: "Annonce introuvable" });
     }
-
-    console.log("Ad author:", ad.author.toString());
-    console.log("User ID from token:", userId);
 
     if (ad.author.toString() !== userId) {
       return res.status(403).json({ error: "Vous n'êtes pas l'auteur de cette annonce et ne pouvez pas la modifier." });

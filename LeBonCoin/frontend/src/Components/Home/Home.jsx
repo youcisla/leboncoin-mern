@@ -90,7 +90,7 @@ const Home = () => {
       setFile(null);
       setShowForm(false);
       fetchAllAds();
-      navigate("/my-ads"); // Redirect to "My Ads" page
+      navigate("/my-ads");
     } catch (err) {
       setErrorMessage(err.response?.data?.error || "Erreur lors de la création de l'annonce");
     }
@@ -109,14 +109,14 @@ const Home = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-    console.log("Token being sent:", token); // Log the token
+    console.log("Token being sent:", token);
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
       formData.append("category", category);
       formData.append("price", price);
-      if (file) formData.append("file", file); // File upload is optional
+      if (file) formData.append("file", file);
 
       await axios.put(`http://localhost:5000/api/ads/${editingAd._id}`, formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
@@ -130,7 +130,7 @@ const Home = () => {
       setFile(null);
       setShowForm(false);
       fetchAllAds();
-      navigate("/my-ads"); // Redirect to "My Ads" page after update
+      navigate("/my-ads");
     } catch (err) {
       setErrorMessage(err.response?.data?.error || "Erreur lors de la mise à jour de l'annonce");
     }
@@ -172,7 +172,6 @@ const Home = () => {
           />
           <div className="row">
             {currentAds.map((ad) => {
-              // Sanitize ad.fileUrl before using it in src and href attributes
               const sanitizedFileUrl = ad.fileUrl ? `http://localhost:5000${encodeURI(ad.fileUrl)}` : null;
 
               return (

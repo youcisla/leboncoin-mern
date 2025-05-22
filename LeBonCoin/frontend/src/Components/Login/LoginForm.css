@@ -29,7 +29,7 @@
 }
 
 .login-message.success {
-  color: #28a745; /* Green color for success messages */
+  color: #28a745;
 }
 
 .login-message.error {

@@ -12,7 +12,7 @@ body {
   padding: 2rem 2.5rem;
   margin: 2.5rem auto;
   width: 100%;
-  max-width: 600px; /* Adjusted width for wider cards */
+  max-width: 600px;
   border: 1.5px solid #00ff84;
   display: flex;
   flex-direction: column;
@@ -133,7 +133,7 @@ body .LeBonCoin-input[type="file"]:hover, body .LeBonCoin-input[type="file"]:foc
 
 .LeBonCoin-navbar {
   position: sticky;
-  top: 1rem; /* Adjusted to maintain the margin-top */
+  top: 1rem;
   z-index: 1000;
   background: #17181c;
   border-bottom: 2px solid #00ff84;
@@ -160,10 +160,10 @@ body .LeBonCoin-input[type="file"]:hover, body .LeBonCoin-input[type="file"]:foc
     background: none;
     border: 1.5px solid #00ff84;
     border-radius: 8px;
-    padding: 6px 16px; /* Adjust padding for better spacing */
+    padding: 6px 16px;
     transition: background 0.2s, color 0.2s;
     display: flex;
-    margin: 0.5rem 0; /* Add margin for vertical spacing */
+    margin: 0.5rem 0;
 }
 .LeBonCoin-navbar .btn:hover {
   background: #00ff84;
@@ -178,8 +178,8 @@ body .LeBonCoin-input[type="file"]:hover, body .LeBonCoin-input[type="file"]:foc
 .LeBonCoin-navbar .custom-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem; /* Increase spacing between buttons */
-  justify-content: flex-end; /* Align buttons to the right */
+  gap: 1.5rem;
+  justify-content: flex-end;
 }
 
 ::-webkit-scrollbar { width: 10px; background: #0e0e10; }
@@ -199,7 +199,7 @@ body .d-flex {
 }
 
 .ad-card {
-  width: 300px; /* Adjusted width for better visibility */
+  width: 300px;
   margin: 10px;
 }
 
