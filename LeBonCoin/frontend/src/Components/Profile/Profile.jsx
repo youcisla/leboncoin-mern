@@ -53,7 +53,7 @@ const Profile = () => {
     <div className="profile-container LeBonCoin-card" style={{ marginTop: 30, maxWidth: 600 }}>
       <h1 className="LeBonCoin-title mb-3">Mon Profil</h1>
       {editMode ? (
-        <>
+        <div className="profile-form">
           <div>
             <label>Nom d'utilisateur :</label>
             <input type="text" name="username" value={formData.username} onChange={handleChange} />
@@ -74,17 +74,19 @@ const Profile = () => {
             <label>Mot de passe :</label>
             <input type="password" name="password" value={formData.password} onChange={handleChange} />
           </div>
-          <button onClick={handleSave}>Enregistrer</button>
-          <button onClick={() => setEditMode(false)}>Annuler</button>
-        </>
+          <div className="profile-buttons">
+            <button className="LeBonCoin-btn" onClick={handleSave}>Sauvegarder</button>
+            <button className="LeBonCoinRed-btn" onClick={() => setEditMode(false)}>Annuler</button>
+          </div>
+        </div>
       ) : (
-        <>
+        <div className="profile-details">
           <div><strong>Nom d'utilisateur :</strong> {user.username}</div>
           <div><strong>Nom :</strong> {user.nom}</div>
           <div><strong>Prénom :</strong> {user.prenom}</div>
           <div><strong>Email :</strong> {user.email}</div>
-          <button onClick={() => setEditMode(true)}>Modifier</button>
-        </>
+          <button className="LeBonCoin-btn" onClick={() => setEditMode(true)}>Modifier</button>
+        </div>
       )}
     </div>
   );
