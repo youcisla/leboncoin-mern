@@ -25,6 +25,7 @@ const Navbar = () => {
             <>
               <span className="LeBonCoin-link">Bienvenue, <span style={{color:"#fff"}}>{username}</span></span>
               <Link to="/" className="LeBonCoin-link">Accueil</Link>
+              <Link to="/profile" className="LeBonCoin-link">Profil</Link>
               <button className="btn LeBonCoin-btn small-btn" onClick={handleLogout}>Déconnexion</button>
             </>
           )}
