@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Ad from "../models/adModel.js"; // Assuming the Ad model is in the same directory
 import User from "../models/userModel.js";
 
 export const registerUser = async (req, res) => {
@@ -87,5 +88,14 @@ export const updateUser = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ error: "Erreur lors de la mise à jour du profil", details: err.message });
+  }
+};
+
+export const getUserAds = async (req, res) => {
+  try {
+    const userAds = await Ad.find({ userId: req.userId });
+    res.status(200).json(userAds);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur lors de la récupération des annonces utilisateur" });
   }
 };

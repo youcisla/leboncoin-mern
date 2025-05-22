@@ -33,6 +33,12 @@ const AllAds = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const totalPages = Math.ceil(filteredAds.length / adsPerPage);
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, currentPage + 1);
+
+  const pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+
   return (
     <div className="container mt-5" style={{ minHeight: '80vh' }}>
       <h2 className="LeBonCoin-title">Toutes les Annonces</h2>
@@ -67,14 +73,24 @@ const AllAds = () => {
         })}
       </div>
       <nav>
-        <ul className="pagination">
-          {Array.from({ length: Math.ceil(filteredAds.length / adsPerPage) }, (_, i) => (
-            <li key={i} className="page-item">
-              <button onClick={() => paginate(i + 1)} className="page-link">
-                {i + 1}
-              </button>
+        <ul className="pagination justify-content-center">
+          {startPage > 1 && (
+            <li className="page-item">
+              <button onClick={() => paginate(1)} className="page-link LeBonCoin-btn">1</button>
+            </li>
+          )}
+          {startPage > 2 && <li className="page-item disabled"><span className="page-link">...</span></li>}
+          {pages.map((page) => (
+            <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+              <button onClick={() => paginate(page)} className="page-link LeBonCoin-btn">{page}</button>
             </li>
           ))}
+          {endPage < totalPages - 1 && <li className="page-item disabled"><span className="page-link">...</span></li>}
+          {endPage < totalPages && (
+            <li className="page-item">
+              <button onClick={() => paginate(totalPages)} className="page-link LeBonCoin-btn">{totalPages}</button>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

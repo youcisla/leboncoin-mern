@@ -17,6 +17,7 @@ const Home = () => {
   const [editingAd, setEditingAd] = useState(null);
   const [username, setUsername] = useState("");
   const [adCount, setAdCount] = useState(0);
+  const [userAdCount, setUserAdCount] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [adsPerPage] = useState(10);
@@ -52,6 +53,12 @@ const Home = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsername(res.data.username);
+
+        // Fetch user's ad count
+        const userAdsRes = await axios.get("http://localhost:5000/api/ads/user", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUserAdCount(userAdsRes.data.length);
       } catch (err) {
         console.error("Erreur récupération utilisateur", err);
       }
@@ -149,6 +156,12 @@ const Home = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const totalPages = Math.ceil(filteredAds.length / adsPerPage);
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, currentPage + 1);
+
+  const pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+
   return (
     <div className="container mt-5" style={{ minHeight: "80vh" }}>
       {!showForm ? (
@@ -156,9 +169,11 @@ const Home = () => {
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap">
             <h2 className="LeBonCoin-title">
               <span style={{ color: 'white' }}>Bienvenue,</span> <span style={{ color: '#00ff84' }}>{username}</span>
-              <span style={{ color: 'white' }}> vous avez </span>
+              <span style={{ color: 'white' }}> il y'a </span>
               <span style={{ color: '#00ff84' }}>{adCount}</span>
-              <span style={{ color: 'white' }}> annonces. Pour les voir, cliquez </span>
+              <span style={{ color: 'white' }}> annonces dont </span>
+              <span style={{ color: '#00ff84' }}>{userAdCount}</span>
+              <span style={{ color: 'white' }}> sont les votres. Pour les voir, cliquez </span>
               <a href="/my-ads" style={{ color: '#00ff84', textDecoration: 'underline' }}>ici</a>.
             </h2>
             <button className="LeBonCoin-btn" onClick={() => setShowForm(true)}>Ajouter une annonce</button>
@@ -196,14 +211,24 @@ const Home = () => {
             })}
           </div>
           <nav>
-            <ul className="pagination">
-              {Array.from({ length: Math.ceil(filteredAds.length / adsPerPage) }, (_, i) => (
-                <li key={i} className="page-item">
-                  <button onClick={() => paginate(i + 1)} className="page-link">
-                    {i + 1}
-                  </button>
+            <ul className="pagination justify-content-center">
+              {startPage > 1 && (
+                <li className="page-item">
+                  <button onClick={() => paginate(1)} className="page-link LeBonCoin-btn">1</button>
+                </li>
+              )}
+              {startPage > 2 && <li className="page-item disabled"><span className="page-link LeBonCoin-btn">...</span></li>}
+              {pages.map((page) => (
+                <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+                  <button onClick={() => paginate(page)} className="page-link LeBonCoin-btn">{page}</button>
                 </li>
               ))}
+              {endPage < totalPages - 1 && <li className="page-item disabled"><span className="page-link LeBonCoin-btn">...</span></li>}
+              {endPage < totalPages && (
+                <li className="page-item">
+                  <button onClick={() => paginate(totalPages)} className="page-link LeBonCoin-btn">{totalPages}</button>
+                </li>
+              )}
             </ul>
           </nav>
         </>

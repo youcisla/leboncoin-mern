@@ -8,6 +8,10 @@ const authMiddleware = (req, res, next) => {
     console.log("Token received in Authorization header:", token);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("Decoded token payload:", decoded);
+    if (!decoded._id) {
+      console.error("Decoded token does not contain user ID:", decoded);
+      return res.status(401).json({ error: "Token invalide: user ID missing" });
+    }
     req.userId = decoded._id;
     next();
   } catch (err) {
