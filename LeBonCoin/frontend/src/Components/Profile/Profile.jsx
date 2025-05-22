@@ -1,19 +1,27 @@
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Profile.css'; // Ensure the path matches the file system exactly
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({ username: '', prenom: '', nom: '', email: '', password: '' });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMe = async () => {
       const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found, redirecting to login.');
+        navigate('/login');
+        return;
+      }
+
       try {
         const res = await axios.get('http://localhost:5000/api/auth/me', {
-          headers: { Authorization: token }
+          headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
         setFormData({
@@ -21,14 +29,19 @@ const Profile = () => {
           prenom: res.data.prenom,
           nom: res.data.nom,
           email: res.data.email,
-          password: ''
+          password: '',
         });
       } catch (err) {
-        console.error(err);
+        console.error('Error fetching user data:', err);
+        if (err.response?.status === 401) {
+          console.error('Invalid or expired token, redirecting to login.');
+          localStorage.removeItem('token');
+          navigate('/login');
+        }
       }
     };
     fetchMe();
-  }, []);
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,7 +51,7 @@ const Profile = () => {
     const token = localStorage.getItem('token');
     try {
       const res = await axios.put('http://localhost:5000/api/auth/me', formData, {
-        headers: { Authorization: token }
+        headers: { Authorization: `Bearer ${token}` } // Added Bearer prefix
       });
       setUser(res.data);
       localStorage.setItem('username', res.data.username); // Update username in localStorage

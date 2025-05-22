@@ -64,30 +64,50 @@ export const loginUser = async (req, res) => {
 export const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.userId).select("-password");
-    if (!user) return res.status(404).json({ error: "Utilisateur non trouvé" });
+
+    if (!user) {
+      console.error("User not found for ID:", req.userId);
+      return res.status(404).json({ error: "Utilisateur non trouvé" });
+    }
+
     res.status(200).json(user);
   } catch (err) {
-    res.status(500).json({ error: "Erreur serveur" });
+    console.error("Error in getCurrentUser:", err.stack);
+    res.status(500).json({ error: "Erreur serveur", details: err.message });
   }
 };
 
 export const updateUser = async (req, res) => {
   try {
     const userId = req.userId;
-    const updates = req.body;
+    let updates = req.body;
 
-    const user = await User.findByIdAndUpdate(userId, updates, {
+    console.log("Updating user with ID:", userId);
+    console.log("Updates received:", updates);
+
+    // Filter out empty fields
+    updates = Object.fromEntries(
+      Object.entries(updates).filter(([key, value]) => value !== "")
+    );
+
+    // Handle password update separately
+    if (updates.password) {
+      updates.password = await bcrypt.hash(updates.password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
       new: true,
       runValidators: true,
     }).select("-password");
 
-    if (!user) {
+    if (!updatedUser) {
       return res.status(404).json({ error: "Utilisateur non trouvé" });
     }
 
-    res.status(200).json(user);
+    res.status(200).json(updatedUser);
   } catch (err) {
-    res.status(500).json({ error: "Erreur lors de la mise à jour du profil", details: err.message });
+    console.error("Error in updateUser:", err.stack);
+    res.status(500).json({ error: "Erreur serveur", details: err.message });
   }
 };
 
