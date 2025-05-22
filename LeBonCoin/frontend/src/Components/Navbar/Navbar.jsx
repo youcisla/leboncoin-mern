@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -15,16 +16,16 @@ const Navbar = () => {
     <nav className="LeBonCoin-navbar mb-5">
       <div className="container d-flex align-items-center justify-content-between">
         <Link className="navbar-brand" to="/">LeBonCoin</Link>
-        <div>
+        <div className="d-flex align-items-center gap-3">
           {!token ? (
             <>
-              <Link to="/register" className="LeBonCoin-link me-3">S'inscrire</Link>
+              <Link to="/register" className="LeBonCoin-link">S'inscrire</Link>
               <Link to="/login" className="LeBonCoin-link">Se connecter</Link>
             </>
           ) : (
             <>
-              <span className="LeBonCoin-link me-3">Bienvenue, <span style={{color:"#fff"}}>{username}</span></span>
-              <Link to="/" className="LeBonCoin-link me-3">Accueil</Link>
+              <span className="LeBonCoin-link">Bienvenue, <span style={{color:"#fff"}}>{username}</span></span>
+              <Link to="/" className="LeBonCoin-link">Accueil</Link>
               <button className="btn LeBonCoin-btn" onClick={handleLogout}>Déconnexion</button>
             </>
           )}

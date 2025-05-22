@@ -1,4 +1,4 @@
-import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const LoginForm = ({ email, setEmail, password, setPassword, handleLogin, message }) => (
   <div className="container mt-5">

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 
@@ -14,7 +15,6 @@ const Login = () => {
       setMessage("Veuillez remplir tous les champs.");
       return false;
     }
-    // Regex: email standard
     const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,}$/;
     if (!emailRegex.test(email)) {
       setMessage("Veuillez entrer un email valide.");

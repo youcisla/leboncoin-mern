@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect, useState } from 'react';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -22,8 +23,8 @@ const Profile = () => {
   if (!user) return <p className="text-center mt-5 text-white">Chargement...</p>;
 
   return (
-    <div className="kick-card" style={{ marginTop: 30, maxWidth: 600 }}>
-      <div className="kick-title mb-3">Mon Profil</div>
+    <div className="LeBonCoin-card" style={{ marginTop: 30, maxWidth: 600 }}>
+      <div className="LeBonCoin-title mb-3">Mon Profil</div>
       <div><strong>Nom d'utilisateur :</strong> {user.username}</div>
       <div><strong>Nom :</strong> {user.nom}</div>
       <div><strong>Prénom :</strong> {user.prenom}</div>

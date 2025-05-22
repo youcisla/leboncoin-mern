@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from './RegisterForm';
 

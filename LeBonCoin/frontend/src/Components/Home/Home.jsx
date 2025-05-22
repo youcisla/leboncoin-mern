@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect, useState } from "react";
 import AdsSection from "./AdsSection";
 
 const Home = () => {

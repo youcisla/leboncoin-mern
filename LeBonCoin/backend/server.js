@@ -1,10 +1,13 @@
-import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import fs from 'fs';
 import mongoose from 'mongoose';
 import path from 'path';
-import fs from 'fs';
 import adRoutes from './routes/adRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+
+dotenv.config();
 
 const app = express();
 
