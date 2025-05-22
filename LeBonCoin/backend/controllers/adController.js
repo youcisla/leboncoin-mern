@@ -63,8 +63,11 @@ const updateAd = async (req, res) => {
       return res.status(404).json({ error: "Annonce introuvable" });
     }
 
+    console.log("Ad author:", ad.author.toString());
+    console.log("User ID from token:", userId);
+
     if (ad.author.toString() !== userId) {
-      return res.status(403).json({ error: "Non autorisé à modifier cette annonce" });
+      return res.status(403).json({ error: "Vous n'êtes pas l'auteur de cette annonce et ne pouvez pas la modifier." });
     }
 
     ad.title = title || ad.title;

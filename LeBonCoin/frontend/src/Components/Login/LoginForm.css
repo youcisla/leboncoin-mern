@@ -7,7 +7,7 @@
 }
 
 .login-card {
-  background: #212529;
+  background: #17181c;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -24,9 +24,16 @@
 }
 
 .login-message {
-  color: #ff4d4d;
   margin-bottom: 15px;
   text-align: center;
+}
+
+.login-message.success {
+  color: #28a745; /* Green color for success messages */
+}
+
+.login-message.error {
+  color: #ff4d4d;
 }
 
 .form-group {

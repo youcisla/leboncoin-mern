@@ -36,7 +36,7 @@ const AdsSection = ({
         <input className="LeBonCoin-input" type="file" onChange={onFileChange} accept="image/*,video/*" />
         <div className="d-flex gap-3 mt-3">
           <button type="submit" className="LeBonCoin-btn">Publier</button>
-          <button type="button" className="btn btn-outline-light" onClick={handleCancel}>Annuler</button>
+          <button type="button" className="LeBonCoinRed-btn" onClick={handleCancel}>Annuler</button>
         </div>
       </form>
     </div>

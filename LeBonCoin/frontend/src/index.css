@@ -41,6 +41,28 @@ body .LeBonCoin-btn:hover, body .LeBonCoin-btn:focus {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
+body .LeBonCoinRed-btn {
+  background: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  padding: 12px 20px;
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  transition: background 0.3s ease, transform 0.2s ease;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body .LeBonCoinRed-btn:hover, body .LeBonCoinRed-btn:focus {
+  background: #e60000;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
 body .LeBonCoin-input,
 body .LeBonCoin-textarea {
   background: #0e0e10;
