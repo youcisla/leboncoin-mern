@@ -41,24 +41,26 @@ const MyAds = () => {
           "Content-Type": "multipart/form-data"
         }
       });
-      navigate("/"); // redirect to all ads
+      navigate("/");
     } catch (err) {
       alert("Échec de création de l'annonce");
     }
   };
 
   return (
-    <div className="kick-card">
-      <div className="kick-title">Créer une annonce</div>
-      <form onSubmit={handleSubmit}>
-        <input className="kick-input" type="text" name="title" placeholder="Titre de l'annonce" onChange={handleChange} required />
-        <textarea className="kick-input" name="description" placeholder="Description détaillée" onChange={handleChange} required />
-        <input className="kick-input" type="text" name="category" placeholder="Catégorie (ex: Immobilier, Électronique)" onChange={handleChange} required />
-        <input className="kick-input" type="number" name="price" placeholder="Prix en €" onChange={handleChange} required />
-        <input className="kick-input" type="file" name="file" onChange={handleChange} />
-        <button type="submit" className="kick-btn">Publier</button>
+    <div className="container mt-5 text-white">
+      <h2 className="LeBonCoin-title text-center">Créer une annonce</h2>
+      <form onSubmit={handleSubmit} className="LeBonCoin-card">
+        <input type="text" name="title" className="LeBonCoin-input" placeholder="Titre de l'annonce" onChange={handleChange} required />
+        <textarea name="description" className="LeBonCoin-textarea" placeholder="Description détaillée" onChange={handleChange} required />
+        <input type="text" name="category" className="LeBonCoin-input" placeholder="Catégorie (ex: Immobilier, Électronique)" onChange={handleChange} required />
+        <input type="number" name="price" className="LeBonCoin-input" placeholder="Prix en €" onChange={handleChange} required />
+        <input type="file" name="file" className="LeBonCoin-input" onChange={handleChange} />
+        <button type="submit" className="LeBonCoin-btn">Publier</button>
       </form>
-      <button className="kick-btn mt-3" style={{background: "#17181c", color: "#00ff84"}} onClick={() => navigate('/')}>Voir toutes les annonces</button>
+      <div className="text-center mt-3">
+        <button className="btn btn-outline-light" onClick={() => navigate('/')}>Voir toutes les annonces</button>
+      </div>
     </div>
   );
 };

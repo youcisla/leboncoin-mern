@@ -6,7 +6,6 @@ const Home = () => {
   const [ads, setAds] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  // Champs du formulaire
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -50,7 +49,6 @@ const Home = () => {
         headers: { Authorization: token, "Content-Type": "multipart/form-data" },
       });
 
-      // Reset + hide form + refresh ads
       setTitle("");
       setDescription("");
       setCategory("");
@@ -68,38 +66,25 @@ const Home = () => {
       {!showForm ? (
         <>
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-            <h2 className="kick-title" style={{ color: "#00ff84" }}>Toutes les annonces</h2>
-            <button
-              className="kick-btn"
-              onClick={() => setShowForm(true)}
-            >
-              Ajouter une annonce
-            </button>
+            <h2 className="LeBonCoin-title">Toutes les annonces</h2>
+            <button className="LeBonCoin-btn" onClick={() => setShowForm(true)}>Ajouter une annonce</button>
           </div>
           <div className="row">
             {ads.map((ad) => (
               <div className="col-12 col-sm-6 col-lg-4 mb-4" key={ad._id}>
-                <div className="kick-card h-100" style={{ border: "1.5px solid #00ff84" }}>
-                  <div>
-                    <div className="kick-title mb-2" style={{ fontSize: 22 }}>{ad.title}</div>
-                    <div className="mb-2" style={{ color: "#a0ffa0" }}>{ad.category} — {ad.price} €</div>
-                    <div className="mb-2" style={{ minHeight: 60 }}>{ad.description}</div>
-                    {ad.fileUrl && ad.fileType?.startsWith("image/") && (
-                      <img src={ad.fileUrl} alt="Visuel" className="img-fluid mb-2" style={{ borderRadius: 8, maxHeight: 160, objectFit: "cover" }} />
-                    )}
-                    {ad.fileUrl && !ad.fileType?.startsWith("image/") && (
-                      <a href={ad.fileUrl} target="_blank" rel="noreferrer" className="kick-link btn btn-sm mt-2" style={{ background: "#181b18" }}>
-                        Voir le fichier
-                      </a>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => handleDelete(ad._id)}
-                    className="kick-btn-cancel mt-3"
-                    style={{ width: "100%" }}
-                  >
-                    Supprimer
-                  </button>
+                <div className="LeBonCoin-card h-100">
+                  <div className="LeBonCoin-title" style={{ fontSize: 22 }}>{ad.title}</div>
+                  <div className="mb-2" style={{ color: "#a0ffa0" }}>{ad.category} — {ad.price} €</div>
+                  <div className="mb-2">{ad.description}</div>
+                  {ad.fileUrl && ad.fileType?.startsWith("image/") && (
+                    <img src={ad.fileUrl} alt="Visuel" className="img-fluid mb-2 rounded" />
+                  )}
+                  {ad.fileUrl && !ad.fileType?.startsWith("image/") && (
+                    <a href={ad.fileUrl} target="_blank" rel="noreferrer" className="btn btn-outline-light btn-sm mt-2">
+                      Voir le fichier
+                    </a>
+                  )}
+                  <button onClick={() => handleDelete(ad._id)} className="LeBonCoin-btn mt-3 w-100">Supprimer</button>
                 </div>
               </div>
             ))}

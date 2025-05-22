@@ -1,31 +1,40 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const RegisterForm = ({ formData, handleChange, handleSubmit, message }) => (
-  <div className="kick-card">
-    <div className="kick-title">Inscription</div>
+  <div className="container mt-5">
+    <h2 className="LeBonCoin-title text-center">Inscription</h2>
     {message && (
-      <div style={{
-        background: "#1f3328",
-        border: "1.5px solid #00ff84",
-        borderRadius: 8,
-        color: "#fff",
-        marginBottom: 14,
-        padding: "12px 14px"
-      }}>{message}</div>
+      <div className="alert alert-warning text-dark fw-semibold border border-warning rounded mb-4 text-center">
+        {message}
+      </div>
     )}
-    <form onSubmit={handleSubmit}>
-      <input className="kick-input" type="text" name="username" placeholder="Nom d'utilisateur *" value={formData.username} onChange={handleChange} required />
-      <input className="kick-input" type="text" name="prenom" placeholder="Prénom" value={formData.prenom} onChange={handleChange} />
-      <input className="kick-input" type="text" name="nom" placeholder="Nom" value={formData.nom} onChange={handleChange} />
-      <input className="kick-input" type="email" name="email" placeholder="Adresse email *" value={formData.email} onChange={handleChange} required />
-      <input className="kick-input" type="password" name="password" placeholder="Mot de passe *" value={formData.password} onChange={handleChange} required />
-      <input className="kick-input" type="password" name="confirmPassword" placeholder="Confirmer le mot de passe *" value={formData.confirmPassword} onChange={handleChange} required />
-      <button type="submit" className="kick-btn">S'inscrire</button>
+    <form onSubmit={handleSubmit} className="LeBonCoin-card">
+      <div className="mb-3">
+        <label className="LeBonCoin-label">Nom d'utilisateur</label>
+        <input type="text" name="username" className="LeBonCoin-input" placeholder="Nom d'utilisateur" onChange={handleChange} required />
+      </div>
+      <div className="mb-3">
+        <label className="LeBonCoin-label">Prénom</label>
+        <input type="text" name="prenom" className="LeBonCoin-input" placeholder="Prénom" onChange={handleChange} />
+      </div>
+      <div className="mb-3">
+        <label className="LeBonCoin-label">Nom</label>
+        <input type="text" name="nom" className="LeBonCoin-input" placeholder="Nom" onChange={handleChange} />
+      </div>
+      <div className="mb-3">
+        <label className="LeBonCoin-label">Email</label>
+        <input type="email" name="email" className="LeBonCoin-input" placeholder="Email" onChange={handleChange} required />
+      </div>
+      <div className="mb-3">
+        <label className="LeBonCoin-label">Mot de passe</label>
+        <input type="password" name="password" className="LeBonCoin-input" placeholder="Mot de passe" onChange={handleChange} required />
+      </div>
+      <div className="mb-3">
+        <label className="LeBonCoin-label">Confirmer le mot de passe</label>
+        <input type="password" name="confirmPassword" className="LeBonCoin-input" placeholder="Confirmer le mot de passe" onChange={handleChange} required />
+      </div>
+      <button type="submit" className="LeBonCoin-btn">S'inscrire</button>
     </form>
-    <div className="mt-3 text-center">
-      <Link to="/login" className="kick-link">Déjà inscrit ? Se connecter</Link>
-    </div>
   </div>
 );
 

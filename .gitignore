@@ -1,14 +1,17 @@
-# node dependencies
-backend/node_modules/
-frontend/node_modules/
-
-# environment
-backend/.env
-
-# logs and cache
-*.log
-output.txt
-
-# build
-frontend/build/
- 
+**/node_modules
+**/.env
+**/package-lock.json
+**/.DS_Store
+**/Thumbs.db
+**/.vscode
+**/.idea
+**/*.sw?
+**/*.log
+**/*.tgz
+**/*.lcov
+**/coverage
+**/dist
+**/build
+**/output.txt
+**/dump
+**/*.zip
