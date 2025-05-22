@@ -14,27 +14,24 @@ const Login = () => {
       setMessage("Veuillez remplir tous les champs.");
       return false;
     }
-
-    const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
+    // Regex: email standard
+    const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,}$/;
     if (!emailRegex.test(email)) {
       setMessage("Veuillez entrer un email valide.");
       return false;
     }
-
     return true;
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username || 'Utilisateur');
       setMessage('Connexion réussie');
-      setTimeout(() => navigate('/'), 1000);
+      setTimeout(() => navigate('/'), 800);
     } catch (error) {
       setMessage(error.response?.data?.error || 'Erreur lors de la connexion');
     }

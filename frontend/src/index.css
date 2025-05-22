@@ -1,53 +1,116 @@
 body {
-  background-color: #0e0e10;
-  color: #f8f9fa;
-  font-family: 'Segoe UI', sans-serif;
+  background: #0e0e10 !important;
+  color: #fff;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  min-height: 100vh;
 }
 
-a.nav-link,
-.navbar-brand {
+.LeBonCoin-card {
+  background: #17181c;
+  border-radius: 20px;
+  box-shadow: 0 2px 32px 0 #00ff8427;
+  padding: 2rem 2.5rem;
+  margin: 2.5rem auto 0;
+  max-width: 640px;
+  border: 1.5px solid #00ff84;
+}
+
+.LeBonCoin-input,
+.LeBonCoin-textarea,
+.LeBonCoin-input[type="file"] {
+  background: #232428;
+  border: 1.5px solid #00ff84;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 14px 18px;
+  margin-bottom: 1rem;
+  width: 100%;
+  transition: border 0.2s;
+}
+
+.LeBonCoin-input:focus,
+.LeBonCoin-textarea:focus {
+  outline: none;
+  border-color: #00ffb0;
+  box-shadow: 0 0 0 2px #00ff8440;
+}
+
+.LeBonCoin-btn {
+  background: linear-gradient(90deg, #00ff84 60%, #00c776 100%);
+  border: none;
+  border-radius: 8px;
+  color: #111;
+  font-weight: bold;
+  padding: 14px 0;
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 1.15rem;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 2px 12px #00ff844a;
+}
+
+.LeBonCoin-btn:hover, .LeBonCoin-btn:focus {
+  background: linear-gradient(90deg, #00ffb0 60%, #00c776 100%);
+  color: #101;
+}
+
+.LeBonCoin-link {
+  color: #00ff84;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.18s;
+}
+.LeBonCoin-link:hover { color: #fff; }
+
+.LeBonCoin-title {
+  color: #00ff84;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 12px #00ff8411;
+}
+
+.LeBonCoin-label {
+  color: #c0ffc7;
+  font-size: 1.02rem;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.LeBonCoin-navbar {
+  background: #17181c;
+  border-bottom: 2px solid #00ff84;
+  box-shadow: 0 0 24px #00ff8427;
+  padding: 0.6rem 0;
+}
+.LeBonCoin-navbar .navbar-brand {
   color: #00ff84 !important;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 12px #00ff8411;
+  margin-right: 2rem;
+}
+.LeBonCoin-navbar .nav-link, .LeBonCoin-navbar .btn {
+  color: #00ff84 !important;
+  font-weight: 500;
+  font-size: 1.07rem;
+}
+.LeBonCoin-navbar .nav-link.active, .LeBonCoin-navbar .btn.active, .LeBonCoin-navbar .nav-link:focus, .LeBonCoin-navbar .btn:focus {
+  color: #fff !important;
+}
+.LeBonCoin-navbar .btn {
+  background: none;
+  border: 1.5px solid #00ff84;
+  margin-left: 0.5rem;
+  border-radius: 8px;
+  padding: 4px 14px;
+  transition: background 0.2s, color 0.2s;
+}
+.LeBonCoin-navbar .btn:hover {
+  background: #00ff84 !important;
+  color: #17181c !important;
 }
 
-.navbar {
-  background-color: #000 !important;
-}
-
-.btn-primary,
-.btn-success {
-  background-color: #00ff84;
-  border-color: #00ff84;
-  color: #000;
-}
-
-.btn-primary:hover,
-.btn-success:hover {
-  background-color: #00cc6a;
-  border-color: #00cc6a;
-  color: #000;
-}
-
-input.form-control,
-textarea.form-control {
-  background-color: #1f1f23;
-  color: white;
-  border: 1px solid #444;
-}
-
-.card {
-  border-radius: 12px;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #ccc !important;
-}
-
-input.form-control:focus,
-textarea.form-control:focus {
-  background-color: #1f1f23;
-  color: white;
-  border: 1px solid #00ff84;
-  box-shadow: 0 0 0 0.2rem rgba(0, 255, 132, 0.25);
-}
-
+::-webkit-scrollbar { width: 10px; background: #0e0e10; }
+::-webkit-scrollbar-thumb { background: #00ff84; border-radius: 5px; }

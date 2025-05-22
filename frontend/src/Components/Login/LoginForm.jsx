@@ -1,21 +1,41 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginForm = ({ email, setEmail, password, setPassword, handleLogin, message }) => (
-  <div className="container mt-5">
-    <h2 className="text-success mb-4">Connexion</h2>
+  <div className="kick-card">
+    <div className="kick-title">Connexion</div>
     {message && (
-  <div className="alert alert-warning text-dark fw-semibold border border-warning rounded mb-4">
-    {message}
-  </div>
-)}
-    <form onSubmit={handleLogin} className="card p-4 bg-dark text-white">
-      <div className="mb-3">
-        <input type="email" className="form-control" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-      </div>
-      <div className="mb-3">
-        <input type="password" className="form-control" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} required />
-      </div>
-      <button type="submit" className="btn btn-success">Se connecter</button>
+      <div style={{
+        background: "#1f3328",
+        border: "1.5px solid #00ff84",
+        borderRadius: 8,
+        color: "#fff",
+        marginBottom: 14,
+        padding: "12px 14px"
+      }}>{message}</div>
+    )}
+    <form onSubmit={handleLogin}>
+      <input
+        className="kick-input"
+        type="email"
+        placeholder="Adresse email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        required
+      />
+      <input
+        className="kick-input"
+        type="password"
+        placeholder="Mot de passe"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        required
+      />
+      <button className="kick-btn" type="submit">Se connecter</button>
     </form>
+    <div className="mt-3 text-center">
+      <Link to="/register" className="kick-link">Créer un compte</Link>
+    </div>
   </div>
 );
 

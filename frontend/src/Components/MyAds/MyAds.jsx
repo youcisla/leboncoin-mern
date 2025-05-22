@@ -41,36 +41,24 @@ const MyAds = () => {
           "Content-Type": "multipart/form-data"
         }
       });
-      navigate("/");
+      navigate("/"); // redirect to all ads
     } catch (err) {
       alert("Échec de création de l'annonce");
     }
   };
 
   return (
-    <div className="container mt-5 text-white">
-      <h2 className="mb-4 text-success">Créer une annonce</h2>
-      <div className="card p-4 bg-dark text-white mb-5">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <input type="text" name="title" className="form-control" placeholder="Titre de l'annonce" onChange={handleChange} required />
-          </div>
-          <div className="mb-3">
-            <textarea name="description" className="form-control" placeholder="Description détaillée" onChange={handleChange} required />
-          </div>
-          <div className="mb-3">
-            <input type="text" name="category" className="form-control" placeholder="Catégorie (ex: Immobilier, Électronique)" onChange={handleChange} required />
-          </div>
-          <div className="mb-3">
-            <input type="number" name="price" className="form-control" placeholder="Prix en €" onChange={handleChange} required />
-          </div>
-          <div className="mb-3">
-            <input type="file" name="file" className="form-control" onChange={handleChange} />
-          </div>
-          <button type="submit" className="btn btn-success">Publier</button>
-        </form>
-      </div>
-      <button className="btn btn-outline-light" onClick={() => navigate('/')}>Voir toutes les annonces</button>
+    <div className="kick-card">
+      <div className="kick-title">Créer une annonce</div>
+      <form onSubmit={handleSubmit}>
+        <input className="kick-input" type="text" name="title" placeholder="Titre de l'annonce" onChange={handleChange} required />
+        <textarea className="kick-input" name="description" placeholder="Description détaillée" onChange={handleChange} required />
+        <input className="kick-input" type="text" name="category" placeholder="Catégorie (ex: Immobilier, Électronique)" onChange={handleChange} required />
+        <input className="kick-input" type="number" name="price" placeholder="Prix en €" onChange={handleChange} required />
+        <input className="kick-input" type="file" name="file" onChange={handleChange} />
+        <button type="submit" className="kick-btn">Publier</button>
+      </form>
+      <button className="kick-btn mt-3" style={{background: "#17181c", color: "#00ff84"}} onClick={() => navigate('/')}>Voir toutes les annonces</button>
     </div>
   );
 };

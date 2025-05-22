@@ -1,34 +1,31 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const RegisterForm = ({ formData, handleChange, handleSubmit, message }) => (
-  <div className="container mt-5">
-    <h2 className="text-success mb-4">Inscription</h2>
+  <div className="kick-card">
+    <div className="kick-title">Inscription</div>
     {message && (
-      <div className="alert alert-warning text-dark fw-semibold border border-warning rounded mb-4">
-        {message}
-      </div>
+      <div style={{
+        background: "#1f3328",
+        border: "1.5px solid #00ff84",
+        borderRadius: 8,
+        color: "#fff",
+        marginBottom: 14,
+        padding: "12px 14px"
+      }}>{message}</div>
     )}
-    <form onSubmit={handleSubmit} className="card p-4 bg-dark text-white">
-      <div className="mb-3">
-        <input type="text" name="username" className="form-control" placeholder="Nom d'utilisateur" onChange={handleChange} required />
-      </div>
-      <div className="mb-3">
-        <input type="text" name="prenom" className="form-control" placeholder="Prénom" onChange={handleChange} />
-      </div>
-      <div className="mb-3">
-        <input type="text" name="nom" className="form-control" placeholder="Nom" onChange={handleChange} />
-      </div>
-      <div className="mb-3">
-        <input type="email" name="email" className="form-control" placeholder="Email" onChange={handleChange} required />
-      </div>
-      <div className="mb-3">
-        <input type="password" name="password" className="form-control" placeholder="Mot de passe" onChange={handleChange} required />
-      </div>
-      <div className="mb-3">
-        <input type="password" name="confirmPassword" className="form-control" placeholder="Confirmer le mot de passe" onChange={handleChange} required />
-      </div>
-      <button type="submit" className="btn btn-success">S'inscrire</button>
+    <form onSubmit={handleSubmit}>
+      <input className="kick-input" type="text" name="username" placeholder="Nom d'utilisateur *" value={formData.username} onChange={handleChange} required />
+      <input className="kick-input" type="text" name="prenom" placeholder="Prénom" value={formData.prenom} onChange={handleChange} />
+      <input className="kick-input" type="text" name="nom" placeholder="Nom" value={formData.nom} onChange={handleChange} />
+      <input className="kick-input" type="email" name="email" placeholder="Adresse email *" value={formData.email} onChange={handleChange} required />
+      <input className="kick-input" type="password" name="password" placeholder="Mot de passe *" value={formData.password} onChange={handleChange} required />
+      <input className="kick-input" type="password" name="confirmPassword" placeholder="Confirmer le mot de passe *" value={formData.confirmPassword} onChange={handleChange} required />
+      <button type="submit" className="kick-btn">S'inscrire</button>
     </form>
+    <div className="mt-3 text-center">
+      <Link to="/login" className="kick-link">Déjà inscrit ? Se connecter</Link>
+    </div>
   </div>
 );
 

@@ -22,14 +22,12 @@ const Profile = () => {
   if (!user) return <p className="text-center mt-5 text-white">Chargement...</p>;
 
   return (
-    <div className="container mt-5 text-white">
-      <h2 className="text-success mb-4">Mon Profil</h2>
-      <div className="card p-4 bg-dark text-white">
-        <p><strong>Nom d'utilisateur :</strong> {user.username}</p>
-        <p><strong>Nom :</strong> {user.nom}</p>
-        <p><strong>Prénom :</strong> {user.prenom}</p>
-        <p><strong>Email :</strong> {user.email}</p>
-      </div>
+    <div className="kick-card" style={{ marginTop: 30, maxWidth: 600 }}>
+      <div className="kick-title mb-3">Mon Profil</div>
+      <div><strong>Nom d'utilisateur :</strong> {user.username}</div>
+      <div><strong>Nom :</strong> {user.nom}</div>
+      <div><strong>Prénom :</strong> {user.prenom}</div>
+      <div><strong>Email :</strong> {user.email}</div>
     </div>
   );
 };

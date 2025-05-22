@@ -1,50 +1,36 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-  const username = localStorage.getItem('username');
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    navigate('/login');
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/login");
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container">
-        <Link className="navbar-brand text-success" to="/">LeBonCoin</Link>
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav ms-auto">
-            {!token ? (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link text-success" to="/register">S'inscrire</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link text-success" to="/login">Se connecter</Link>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <span className="navbar-text text-white me-3">Bienvenue, {username}</span>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link text-success" to="/">Accueil</Link>
-                </li>
-                <li className="nav-item">
-                  <button onClick={handleLogout} className="btn btn-outline-light ms-3">Déconnexion</button>
-                </li>
-              </>
-            )}
-          </ul>
+    <nav className="LeBonCoin-navbar mb-5">
+      <div className="container d-flex align-items-center justify-content-between">
+        <Link className="navbar-brand" to="/">LeBonCoin</Link>
+        <div>
+          {!token ? (
+            <>
+              <Link to="/register" className="LeBonCoin-link me-3">S'inscrire</Link>
+              <Link to="/login" className="LeBonCoin-link">Se connecter</Link>
+            </>
+          ) : (
+            <>
+              <span className="LeBonCoin-link me-3">Bienvenue, <span style={{color:"#fff"}}>{username}</span></span>
+              <Link to="/" className="LeBonCoin-link me-3">Accueil</Link>
+              <button className="btn LeBonCoin-btn" onClick={handleLogout}>Déconnexion</button>
+            </>
+          )}
         </div>
       </div>
     </nav>
   );
 };
-
 export default Navbar;

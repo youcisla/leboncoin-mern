@@ -24,32 +24,32 @@ const Register = () => {
       setMessage("Tous les champs obligatoires doivent être remplis.");
       return false;
     }
-
-    const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const emailRegex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,}$/;
     if (!emailRegex.test(formData.email)) {
       setMessage("Veuillez entrer un email valide.");
       return false;
     }
-
     if (formData.password !== formData.confirmPassword) {
       setMessage("Les mots de passe ne correspondent pas.");
       return false;
     }
-
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', formData);
+      await axios.post('http://localhost:5000/api/auth/register', formData);
       setMessage('Inscription réussie !');
-      setTimeout(() => navigate('/'), 1000);
+      setTimeout(() => navigate('/'), 800);
     } catch (error) {
-      setMessage(error.response?.data?.error || "Erreur lors de l'inscription");
+      const msg = error.response?.data?.error;
+      if (msg && msg.toLowerCase().includes("duplicate")) {
+        setMessage("Cet email est déjà utilisé.");
+      } else {
+        setMessage(msg || "Erreur lors de l'inscription");
+      }
     }
   };
 
