@@ -1,6 +1,7 @@
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdsSection from "./AdsSection";
 
 const Home = () => {
@@ -14,24 +15,54 @@ const Home = () => {
   const [price, setPrice] = useState("");
   const [file, setFile] = useState(null);
   const [editingAd, setEditingAd] = useState(null);
+  const [username, setUsername] = useState("");
+  const [adCount, setAdCount] = useState(0);
 
-  const fetchAds = async () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [adsPerPage] = useState(10);
+  const [filter, setFilter] = useState("");
+
+  const navigate = useNavigate();
+
+  const fetchAllAds = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/ads");
-      setAds(res.data);
+      const res = await axios.get("http://localhost:5000/api/ads/all");
+      if (res.data && res.data.length > 0) {
+        setAds(res.data);
+        setAdCount(res.data.length);
+      } else {
+        setAds([]);
+        setAdCount(0);
+      }
     } catch (err) {
       console.error("Erreur récupération annonces", err);
+      setErrorMessage("Impossible de récupérer les annonces. Veuillez réessayer plus tard.");
     }
   };
 
   useEffect(() => {
-    fetchAds();
+    fetchAllAds();
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const res = await axios.get("http://localhost:5000/api/auth/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUsername(res.data.username);
+      } catch (err) {
+        console.error("Erreur récupération utilisateur", err);
+      }
+    };
+    fetchUser();
   }, []);
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/api/ads/${id}`);
-      fetchAds();
+      fetchAllAds();
     } catch (err) {
       alert("Erreur lors de la suppression de l'annonce");
     }
@@ -58,7 +89,8 @@ const Home = () => {
       setPrice("");
       setFile(null);
       setShowForm(false);
-      fetchAds();
+      fetchAllAds();
+      navigate("/my-ads"); // Redirect to "My Ads" page
     } catch (err) {
       setErrorMessage(err.response?.data?.error || "Erreur lors de la création de l'annonce");
     }
@@ -77,6 +109,7 @@ const Home = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+    console.log("Token being sent:", token); // Log the token
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -86,7 +119,7 @@ const Home = () => {
       if (file) formData.append("file", file); // File upload is optional
 
       await axios.put(`http://localhost:5000/api/ads/${editingAd._id}`, formData, {
-        headers: { Authorization: token, "Content-Type": "multipart/form-data" },
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       });
 
       setEditingAd(null);
@@ -96,24 +129,51 @@ const Home = () => {
       setPrice("");
       setFile(null);
       setShowForm(false);
-      fetchAds();
+      fetchAllAds();
+      navigate("/my-ads"); // Redirect to "My Ads" page after update
     } catch (err) {
       setErrorMessage(err.response?.data?.error || "Erreur lors de la mise à jour de l'annonce");
     }
   };
+
+  const filteredAds = filter
+    ? ads.filter((ad) =>
+        ad.title.toLowerCase().includes(filter.toLowerCase()) ||
+        ad.category.toLowerCase().includes(filter.toLowerCase())
+      )
+    : ads;
+
+  const indexOfLastAd = currentPage * adsPerPage;
+  const indexOfFirstAd = indexOfLastAd - adsPerPage;
+  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="container mt-5" style={{ minHeight: "80vh" }}>
       {!showForm ? (
         <>
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-            <h2 className="LeBonCoin-title">Toutes les annonces</h2>
+            <h2 className="LeBonCoin-title">
+              <span style={{ color: 'white' }}>Bienvenue,</span> <span style={{ color: '#00ff84' }}>{username}</span>
+              <span style={{ color: 'white' }}> vous avez </span>
+              <span style={{ color: '#00ff84' }}>{adCount}</span>
+              <span style={{ color: 'white' }}> annonces. Pour les voir, cliquez </span>
+              <a href="/my-ads" style={{ color: '#00ff84', textDecoration: 'underline' }}>ici</a>.
+            </h2>
             <button className="LeBonCoin-btn" onClick={() => setShowForm(true)}>Ajouter une annonce</button>
           </div>
+          <input
+            type="text"
+            placeholder="Filtrer par titre..."
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="form-control mb-4"
+          />
           <div className="row">
-            {ads.map((ad) => {
+            {currentAds.map((ad) => {
               // Sanitize ad.fileUrl before using it in src and href attributes
-              const sanitizedFileUrl = ad.fileUrl ? encodeURI(ad.fileUrl) : null;
+              const sanitizedFileUrl = ad.fileUrl ? `http://localhost:5000${encodeURI(ad.fileUrl)}` : null;
 
               return (
                 <div className="col-12 col-sm-6 col-lg-4 mb-4" key={ad._id}>
@@ -129,13 +189,24 @@ const Home = () => {
                         Voir le fichier
                       </a>
                     )}
-                    <button className="LeBonCoinRed-btn" onClick={() => handleDelete(ad._id)}>Supprimer</button>
                     <button onClick={() => handleEdit(ad)} className="LeBonCoin-btn mt-3 w-100">Modifier</button>
+                    <button className="LeBonCoinRed-btn" onClick={() => handleDelete(ad._id)}>Supprimer</button>
                   </div>
                 </div>
               );
             })}
           </div>
+          <nav>
+            <ul className="pagination">
+              {Array.from({ length: Math.ceil(filteredAds.length / adsPerPage) }, (_, i) => (
+                <li key={i} className="page-item">
+                  <button onClick={() => paginate(i + 1)} className="page-link">
+                    {i + 1}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </>
       ) : (
         <>

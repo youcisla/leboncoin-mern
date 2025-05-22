@@ -160,14 +160,26 @@ body .LeBonCoin-input[type="file"]:hover, body .LeBonCoin-input[type="file"]:foc
     background: none;
     border: 1.5px solid #00ff84;
     border-radius: 8px;
-    padding: 4px 14px;
+    padding: 6px 16px; /* Adjust padding for better spacing */
     transition: background 0.2s, color 0.2s;
     display: flex;
-    margin: 0rem;
+    margin: 0.5rem 0; /* Add margin for vertical spacing */
 }
 .LeBonCoin-navbar .btn:hover {
   background: #00ff84;
   color: #17181c;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.LeBonCoin-navbar .custom-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem; /* Increase spacing between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
 }
 
 ::-webkit-scrollbar { width: 10px; background: #0e0e10; }

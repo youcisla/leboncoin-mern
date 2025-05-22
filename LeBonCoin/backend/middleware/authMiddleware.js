@@ -5,7 +5,9 @@ const authMiddleware = (req, res, next) => {
   if (!token) return res.status(401).json({ error: "Token manquant" });
 
   try {
+    console.log("Token received in Authorization header:", token);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded token payload:", decoded);
     req.userId = decoded._id;
     next();
   } catch (err) {

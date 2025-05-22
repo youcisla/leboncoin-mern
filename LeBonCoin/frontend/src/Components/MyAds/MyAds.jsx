@@ -1,67 +1,76 @@
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const MyAds = () => {
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    category: "",
-    price: "",
-    file: null,
-  });
-
+  const [myAds, setMyAds] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [adsPerPage] = useState(10);
+  const [filter, setFilter] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "file") {
-      setForm({ ...form, file: files[0] });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
-  };
+  useEffect(() => {
+    const fetchMyAds = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:5000/api/ads/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setMyAds(res.data);
+      } catch (err) {
+        console.error("Erreur récupération de mes annonces", err);
+      }
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    const formData = new FormData();
-    formData.append("title", form.title);
-    formData.append("description", form.description);
-    formData.append("category", form.category);
-    formData.append("price", form.price);
-    if (form.file) {
-      formData.append("file", form.file);
-    }
+    fetchMyAds();
+  }, []);
 
-    try {
-      await axios.post("http://localhost:5000/api/ads", formData, {
-        headers: {
-          Authorization: token,
-          "Content-Type": "multipart/form-data"
-        }
-      });
-      navigate("/");
-    } catch (err) {
-      alert("Échec de création de l'annonce");
-    }
-  };
+  const filteredAds = filter
+    ? myAds.filter((ad) =>
+        ad.title.toLowerCase().includes(filter.toLowerCase()) ||
+        ad.category.toLowerCase().includes(filter.toLowerCase())
+      )
+    : myAds;
+
+  const indexOfLastAd = currentPage * adsPerPage;
+  const indexOfFirstAd = indexOfLastAd - adsPerPage;
+  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="container mt-5 text-white">
-      <h2 className="LeBonCoin-title text-center">Créer une annonce</h2>
-      <form onSubmit={handleSubmit} className="LeBonCoin-card">
-        <input type="text" name="title" className="LeBonCoin-input" placeholder="Titre de l'annonce" onChange={handleChange} required />
-        <textarea name="description" className="LeBonCoin-textarea" placeholder="Description détaillée" onChange={handleChange} required />
-        <input type="text" name="category" className="LeBonCoin-input" placeholder="Catégorie (ex: Immobilier, Électronique)" onChange={handleChange} required />
-        <input type="number" name="price" className="LeBonCoin-input" placeholder="Prix en €" onChange={handleChange} required />
-        <input type="file" name="file" className="LeBonCoin-input" onChange={handleChange} />
-        <button type="submit" className="LeBonCoin-btn">Publier</button>
-      </form>
-      <div className="text-center mt-3">
-        <button className="btn btn-outline-light" onClick={() => navigate('/')}>Voir toutes les annonces</button>
+    <div className="container mt-5" style={{ minHeight: "80vh" }}>
+      <h2 className="LeBonCoin-title">Mes Annonces</h2>
+      <input
+        type="text"
+        placeholder="Filtrer par titre..."
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        className="form-control mb-4"
+      />
+      <div className="row">
+        {currentAds.map((ad) => (
+          <div className="col-12 col-sm-6 col-lg-4 mb-4" key={ad._id}>
+            <div className="LeBonCoin-card h-100">
+              <div className="LeBonCoin-title" style={{ fontSize: 22 }}>{ad.title}</div>
+              <div className="mb-2" style={{ color: "#a0ffa0" }}>{ad.category} — {ad.price} €</div>
+              <div className="mb-2">{ad.description}</div>
+            </div>
+          </div>
+        ))}
       </div>
+      <nav>
+        <ul className="pagination">
+          {Array.from({ length: Math.ceil(filteredAds.length / adsPerPage) }, (_, i) => (
+            <li key={i} className="page-item">
+              <button onClick={() => paginate(i + 1)} className="page-link">
+                {i + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 };

@@ -26,6 +26,8 @@ const Navbar = () => {
               <span className="LeBonCoin-link">Bienvenue, <span style={{color:"#fff"}}>{username}</span></span>
               <Link to="/" className="LeBonCoin-link">Accueil</Link>
               <Link to="/profile" className="LeBonCoin-link">Profil</Link>
+              <Link to="/all-ads" className="LeBonCoin-link">Toutes les annonces</Link>
+              <Link to="/my-ads" className="LeBonCoin-link">Mes annonces</Link>
               <button className="btn LeBonCoin-btn small-btn" onClick={handleLogout}>Déconnexion</button>
             </>
           )}

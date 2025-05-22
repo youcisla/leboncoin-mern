@@ -15,7 +15,12 @@ export const registerUser = async (req, res) => {
     });
 
     await user.save();
-    res.status(201).send(user);
+    // Only return safe fields, never the whole user object
+    res.status(201).send({
+      _id: user._id,
+      email: user.email,
+      username: user.username
+    });
   } catch (error) {
     if (error.code === 11000 && error.keyValue?.email) {
       return res.status(400).send({ error: "Cet email est déjà utilisé." });
@@ -62,5 +67,25 @@ export const getCurrentUser = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ error: "Erreur serveur" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const updates = req.body;
+
+    const user = await User.findByIdAndUpdate(userId, updates, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ error: "Utilisateur non trouvé" });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur lors de la mise à jour du profil", details: err.message });
   }
 };

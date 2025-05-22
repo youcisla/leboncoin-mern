@@ -41,6 +41,7 @@ const Profile = () => {
         headers: { Authorization: token }
       });
       setUser(res.data);
+      localStorage.setItem('username', res.data.username); // Update username in localStorage
       setEditMode(false);
     } catch (err) {
       console.error(err);

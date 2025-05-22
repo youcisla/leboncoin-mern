@@ -44,9 +44,13 @@ const createAd = async (req, res) => {
 
 const getAllAds = async (req, res) => {
   try {
-    const ads = await Ad.find().sort({ createdAt: -1 });
+    const userId = req.userId;
+    console.log("Fetching ads for userId:", userId); // Debugging log
+    const ads = await Ad.find({ author: userId }).sort({ createdAt: -1 });
+    console.log("Fetched ads:", ads); // Debugging log
     res.json(ads);
   } catch (error) {
+    console.error("Error in getAllAds:", error.stack);
     res.status(500).json({ error: "Erreur lors de la récupération des annonces" });
   }
 };
@@ -56,6 +60,10 @@ const updateAd = async (req, res) => {
     const { id } = req.params;
     const { title, description, category, price } = req.body;
     const userId = req.userId;
+
+    console.log("Request Params (ID):", id);
+    console.log("Request Body:", req.body);
+    console.log("Request File:", req.file);
 
     const ad = await Ad.findById(id);
 
@@ -111,5 +119,14 @@ const deleteAd = async (req, res) => {
   }
 };
 
-export { createAd, deleteAd, getAllAds, updateAd };
+const getAllAdsForAllUsers = async (req, res) => {
+  try {
+    const ads = await Ad.find().sort({ createdAt: -1 });
+    res.json(ads);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la récupération de toutes les annonces" });
+  }
+};
+
+export { createAd, deleteAd, getAllAds, getAllAdsForAllUsers, updateAd };
 
