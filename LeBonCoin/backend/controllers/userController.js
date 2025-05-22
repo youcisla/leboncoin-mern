@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Ad from "../models/adModel.js"; // Assuming the Ad model is in the same directory
+import Ad from "../models/adModel.js";
 import User from "../models/userModel.js";
 
 export const registerUser = async (req, res) => {
@@ -16,7 +16,6 @@ export const registerUser = async (req, res) => {
     });
 
     await user.save();
-    // Only return safe fields, never the whole user object
     res.status(201).send({
       _id: user._id,
       email: user.email,
@@ -66,13 +65,11 @@ export const getCurrentUser = async (req, res) => {
     const user = await User.findById(req.userId).select("-password");
 
     if (!user) {
-      console.error("User not found for ID:", req.userId);
       return res.status(404).json({ error: "Utilisateur non trouvé" });
     }
 
     res.status(200).json(user);
   } catch (err) {
-    console.error("Error in getCurrentUser:", err.stack);
     res.status(500).json({ error: "Erreur serveur", details: err.message });
   }
 };
@@ -82,15 +79,10 @@ export const updateUser = async (req, res) => {
     const userId = req.userId;
     let updates = req.body;
 
-    console.log("Updating user with ID:", userId);
-    console.log("Updates received:", updates);
-
-    // Filter out empty fields
     updates = Object.fromEntries(
       Object.entries(updates).filter(([key, value]) => value !== "")
     );
 
-    // Handle password update separately
     if (updates.password) {
       updates.password = await bcrypt.hash(updates.password, 10);
     }
@@ -106,19 +98,15 @@ export const updateUser = async (req, res) => {
 
     res.status(200).json(updatedUser);
   } catch (err) {
-    console.error("Error in updateUser:", err.stack);
     res.status(500).json({ error: "Erreur serveur", details: err.message });
   }
 };
 
 export const getUserAds = async (req, res) => {
   try {
-    console.log("Fetching ads for userId:", req.userId);
-    const userAds = await Ad.find({ author: req.userId }); // Updated to query using 'author' field
-    console.log("Ads retrieved:", userAds);
+    const userAds = await Ad.find({ author: req.userId });
     res.status(200).json(userAds);
   } catch (err) {
-    console.error("Error fetching user ads:", err);
     res.status(500).json({ error: "Erreur lors de la récupération des annonces utilisateur" });
   }
 };

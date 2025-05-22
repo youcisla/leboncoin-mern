@@ -57,7 +57,6 @@ const Home = () => {
         });
         setUsername(res.data.username);
 
-        // Fetch user's ad count
         const userAdsRes = await axios.get("http://localhost:5000/api/ads/user", {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -160,7 +159,7 @@ const Home = () => {
 
   const indexOfLastAd = currentPage * adsPerPage;
   const indexOfFirstAd = indexOfLastAd - adsPerPage;
-  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd); // Ensure slicing is done after filtering
+  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
