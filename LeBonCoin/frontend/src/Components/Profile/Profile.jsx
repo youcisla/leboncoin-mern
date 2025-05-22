@@ -50,42 +50,72 @@ const Profile = () => {
   if (!user) return <p className="text-center mt-5 text-white">Chargement...</p>;
 
   return (
-    <div className="profile-container LeBonCoin-card" style={{ marginTop: 30, maxWidth: 600 }}>
-      <h1 className="LeBonCoin-title mb-3">Mon Profil</h1>
+    <div className="LeBonCoin-card mt-4" style={{ maxWidth: 600, margin: '0 auto' }}>
+      <h1 className="LeBonCoin-title">Mon Profil</h1>
       {editMode ? (
-        <div className="profile-form">
-          <div>
-            <label>Nom d'utilisateur :</label>
-            <input type="text" name="username" value={formData.username} onChange={handleChange} />
+        <form className="profile-form">
+          <div className="mb-3">
+            <label className="LeBonCoin-label">Nom d'utilisateur:</label>
+            <input
+              type="text"
+              name="username"
+              className="LeBonCoin-input"
+              value={formData.username}
+              onChange={handleChange}
+            />
           </div>
-          <div>
-            <label>Nom :</label>
-            <input type="text" name="nom" value={formData.nom} onChange={handleChange} />
+          <div className="mb-3">
+            <label className="LeBonCoin-label">Nom:</label>
+            <input
+              type="text"
+              name="nom"
+              className="LeBonCoin-input"
+              value={formData.nom}
+              onChange={handleChange}
+            />
           </div>
-          <div>
-            <label>Prénom :</label>
-            <input type="text" name="prenom" value={formData.prenom} onChange={handleChange} />
+          <div className="mb-3">
+            <label className="LeBonCoin-label">Prénom:</label>
+            <input
+              type="text"
+              name="prenom"
+              className="LeBonCoin-input"
+              value={formData.prenom}
+              onChange={handleChange}
+            />
           </div>
-          <div>
-            <label>Email :</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} />
+          <div className="mb-3">
+            <label className="LeBonCoin-label">Email:</label>
+            <input
+              type="email"
+              name="email"
+              className="LeBonCoin-input"
+              value={formData.email}
+              onChange={handleChange}
+            />
           </div>
-          <div>
-            <label>Mot de passe :</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} />
+          <div className="mb-3">
+            <label className="LeBonCoin-label">Mot de passe:</label>
+            <input
+              type="password"
+              name="password"
+              className="LeBonCoin-input"
+              value={formData.password}
+              onChange={handleChange}
+            />
           </div>
-          <div className="profile-buttons">
-            <button className="LeBonCoin-btn" onClick={handleSave}>Sauvegarder</button>
-            <button className="LeBonCoinRed-btn" onClick={() => setEditMode(false)}>Annuler</button>
+          <div className="d-flex gap-3 mt-3">
+            <button type="button" className="LeBonCoin-btn" onClick={handleSave}>Sauvegarder</button>
+            <button type="button" className="LeBonCoinRed-btn" onClick={() => setEditMode(false)}>Annuler</button>
           </div>
-        </div>
+        </form>
       ) : (
         <div className="profile-details">
-          <div><strong>Nom d'utilisateur :</strong> {user.username}</div>
-          <div><strong>Nom :</strong> {user.nom}</div>
-          <div><strong>Prénom :</strong> {user.prenom}</div>
-          <div><strong>Email :</strong> {user.email}</div>
-          <button className="LeBonCoin-btn" onClick={() => setEditMode(true)}>Modifier</button>
+          <p><strong>Nom d'utilisateur:</strong> {user.username}</p>
+          <p><strong>Nom:</strong> {user.nom}</p>
+          <p><strong>Prénom:</strong> {user.prenom}</p>
+          <p><strong>Email:</strong> {user.email}</p>
+          <button className="LeBonCoin-btn mt-3" onClick={() => setEditMode(true)}>Modifier</button>
         </div>
       )}
     </div>
