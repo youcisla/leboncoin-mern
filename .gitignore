@@ -1,0 +1,14 @@
+# node dependencies
+backend/node_modules/
+frontend/node_modules/
+
+# environment
+backend/.env
+
+# logs and cache
+*.log
+output.txt
+
+# build
+frontend/build/
+ 
