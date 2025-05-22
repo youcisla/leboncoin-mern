@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import { createAd, getAllAds } from '../controllers/adController.js';
+import { createAd, deleteAd, getAllAds, updateAd } from '../controllers/adController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -29,5 +29,7 @@ const upload = multer({ storage, fileFilter });
 
 router.get('/', getAllAds);
 router.post('/', authMiddleware, upload.single('file'), createAd);
+router.put('/:id', authMiddleware, upload.single('file'), updateAd);
+router.delete('/:id', authMiddleware, deleteAd);
 
 export default router;

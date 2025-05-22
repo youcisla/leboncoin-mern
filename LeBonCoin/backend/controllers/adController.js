@@ -51,5 +51,62 @@ const getAllAds = async (req, res) => {
   }
 };
 
-export { createAd, getAllAds };
+const updateAd = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, category, price } = req.body;
+    const userId = req.userId;
+
+    const ad = await Ad.findById(id);
+
+    if (!ad) {
+      return res.status(404).json({ error: "Annonce introuvable" });
+    }
+
+    if (ad.author.toString() !== userId) {
+      return res.status(403).json({ error: "Non autorisé à modifier cette annonce" });
+    }
+
+    ad.title = title || ad.title;
+    ad.description = description || ad.description;
+    ad.category = category || ad.category;
+    ad.price = price || ad.price;
+
+    if (req.file) {
+      ad.fileUrl = `/uploads/${req.file.filename}`;
+      ad.fileType = req.file.mimetype;
+    }
+
+    await ad.save();
+    res.status(200).json(ad);
+  } catch (error) {
+    console.error("Error in updateAd:", error.stack);
+    res.status(500).json({ error: "Erreur lors de la mise à jour de l'annonce", details: error.message });
+  }
+};
+
+const deleteAd = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    const ad = await Ad.findById(id);
+
+    if (!ad) {
+      return res.status(404).json({ error: "Annonce introuvable" });
+    }
+
+    if (ad.author.toString() !== userId) {
+      return res.status(403).json({ error: "Non autorisé à supprimer cette annonce" });
+    }
+
+    await ad.remove();
+    res.status(200).json({ message: "Annonce supprimée avec succès" });
+  } catch (error) {
+    console.error("Error in deleteAd:", error.stack);
+    res.status(500).json({ error: "Erreur lors de la suppression de l'annonce", details: error.message });
+  }
+};
+
+export { createAd, deleteAd, getAllAds, updateAd };
 

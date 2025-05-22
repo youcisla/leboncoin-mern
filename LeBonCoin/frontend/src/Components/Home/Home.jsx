@@ -12,6 +12,7 @@ const Home = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [file, setFile] = useState(null);
+  const [editingAd, setEditingAd] = useState(null);
 
   const fetchAds = async () => {
     try {
@@ -62,6 +63,44 @@ const Home = () => {
     }
   };
 
+  const handleEdit = (ad) => {
+    setEditingAd(ad);
+    setTitle(ad.title);
+    setDescription(ad.description);
+    setCategory(ad.category);
+    setPrice(ad.price);
+    setFile(null);
+    setShowForm(true);
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("category", category);
+      formData.append("price", price);
+      if (file) formData.append("file", file);
+
+      await axios.put(`http://localhost:5000/api/ads/${editingAd._id}`, formData, {
+        headers: { Authorization: token, "Content-Type": "multipart/form-data" },
+      });
+
+      setEditingAd(null);
+      setTitle("");
+      setDescription("");
+      setCategory("");
+      setPrice("");
+      setFile(null);
+      setShowForm(false);
+      fetchAds();
+    } catch (err) {
+      alert("Erreur lors de la mise à jour de l'annonce");
+    }
+  };
+
   return (
     <div className="container mt-5" style={{ minHeight: "80vh" }}>
       {!showForm ? (
@@ -86,6 +125,7 @@ const Home = () => {
                     </a>
                   )}
                   <button onClick={() => handleDelete(ad._id)} className="LeBonCoin-btn mt-3 w-100">Supprimer</button>
+                  <button onClick={() => handleEdit(ad)} className="LeBonCoin-btn mt-3 w-100">Modifier</button>
                 </div>
               </div>
             ))}
@@ -103,8 +143,11 @@ const Home = () => {
           setPrice={setPrice}
           file={file}
           setFile={setFile}
-          handleSubmit={handleSubmit}
-          handleCancel={() => setShowForm(false)}
+          handleSubmit={editingAd ? handleUpdate : handleSubmit}
+          handleCancel={() => {
+            setEditingAd(null);
+            setShowForm(false);
+          }}
         />
       )}
     </div>
