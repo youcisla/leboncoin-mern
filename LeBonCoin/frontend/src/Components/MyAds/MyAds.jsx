@@ -17,6 +17,7 @@ const MyAds = () => {
         const res = await axios.get("http://localhost:5000/api/ads/", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("Response from backend:", res.data);
         setMyAds(res.data);
       } catch (err) {
         console.error("Erreur récupération de mes annonces", err);
@@ -56,6 +57,14 @@ const MyAds = () => {
               <div className="LeBonCoin-title" style={{ fontSize: 22 }}>{ad.title}</div>
               <div className="mb-2" style={{ color: "#a0ffa0" }}>{ad.category} — {ad.price} €</div>
               <div className="mb-2">{ad.description}</div>
+              {ad.fileUrl && (
+                <img
+                  src={`http://localhost:5000${ad.fileUrl}`}
+                  alt={ad.title}
+                  className="img-fluid mb-2"
+                  style={{ maxHeight: "200px", objectFit: "cover" }}
+                />
+              )}
             </div>
           </div>
         ))}

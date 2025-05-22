@@ -42,7 +42,11 @@ const createAd = async (req, res) => {
 const getAllAds = async (req, res) => {
   try {
     const userId = req.userId;
+    console.log("User ID from request:", userId);
     const ads = await Ad.find({ author: userId }).sort({ createdAt: -1 });
+    console.log("Fetching ads for user:", userId);
+    console.log("Ads fetched:", ads);
+    console.log("Database query:", { author: userId });
     res.json(ads);
   } catch (error) {
     console.error("Error in getAllAds:", error.stack);
