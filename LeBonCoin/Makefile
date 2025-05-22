@@ -3,10 +3,10 @@ install:
 	cd frontend && npm install
 
 backend:
-	cd backend && npm run dev
+	cd backend && npm run dev && npm audit fix --force
 
 frontend:
-	cd frontend && npm start
+	cd frontend && npm start && npm audit fix --force
 
 start-backend:
 	cmd /c start "" "backend\\start-backend.bat"
