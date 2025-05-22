@@ -20,7 +20,7 @@ const MyAds = () => {
           return;
         }
 
-        const res = await axios.get("http://localhost:5000/api/ads/", {
+        const res = await axios.get("http://localhost:5000/api/ads/user", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

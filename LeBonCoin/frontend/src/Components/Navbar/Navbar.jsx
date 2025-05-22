@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import logo from '../../assets/logo.png';
 
 const Navbar = () => {
   const token = localStorage.getItem("token");
@@ -14,7 +15,10 @@ const Navbar = () => {
   return (
     <nav className="LeBonCoin-navbar mb-5">
       <div className="custom-container">
-        <Link className="navbar-brand" to="/">LeBonCoin</Link>
+        <Link className="navbar-brand" to="/">
+          <img src={logo} alt="LeBonCoin Logo" style={{ height: '40px', marginRight: '10px', borderRadius: '50%' }} />
+          LeBonCoin
+        </Link>
         <div className="custom-actions">
           {!token ? (
             <>

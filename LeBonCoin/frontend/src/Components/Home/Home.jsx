@@ -2,6 +2,7 @@ import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import jcLogo from '../../assets/jc.png';
 import AdsSection from "./AdsSection";
 
 const Home = () => {
@@ -171,6 +172,39 @@ const Home = () => {
 
   return (
     <div className="container mt-5" style={{ minHeight: "80vh" }}>
+      <div className="special-ad-section" style={{
+        backgroundColor: "gold",
+        padding: "2rem",
+        borderRadius: "15px",
+        marginBottom: "2rem",
+        boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+        textAlign: "center",
+        color: "black"
+      }}>
+        <img src={jcLogo} alt="JC Logo" style={{ height: '50px', marginBottom: '1rem' }} />
+        <h2 style={{ fontSize: "2.5rem", fontWeight: "bold", marginBottom: "1rem" }}>Annonce Spéciale</h2>
+        <p style={{ fontSize: "1.2rem", marginBottom: "1.5rem" }}>Découvrez notre marque partenaire :</p>
+        <a
+          href="https://jarche.net/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-block",
+            padding: "0.8rem 1.5rem",
+            backgroundColor: "#000",
+            color: "gold",
+            borderRadius: "8px",
+            textDecoration: "none",
+            fontWeight: "bold",
+            transition: "background-color 0.3s ease"
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = "#333"}
+          onMouseOut={(e) => e.target.style.backgroundColor = "#000"}
+        >
+          Visitez JC
+        </a>
+      </div>
+
       {!showForm ? (
         <>
           <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap">
