@@ -14,13 +14,25 @@ const MyAds = () => {
     const fetchMyAds = async () => {
       try {
         const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found");
+          setMyAds([]);
+          return;
+        }
+
         const res = await axios.get("http://localhost:5000/api/ads/", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log("Response from backend:", res.data);
-        setMyAds(res.data);
+
+        if (res.data && Array.isArray(res.data)) {
+          setMyAds(res.data);
+        } else {
+          console.warn("Invalid response format", res.data);
+          setMyAds([]);
+        }
       } catch (err) {
-        console.error("Erreur récupération de mes annonces", err);
+        console.error("Error fetching ads", err);
+        setMyAds([]);
       }
     };
 
@@ -29,14 +41,14 @@ const MyAds = () => {
 
   const filteredAds = filter
     ? myAds.filter((ad) =>
-        ad.title.toLowerCase().includes(filter.toLowerCase()) ||
-        ad.category.toLowerCase().includes(filter.toLowerCase())
+        ad.title?.toLowerCase().includes(filter.toLowerCase()) ||
+        ad.category?.toLowerCase().includes(filter.toLowerCase())
       )
     : myAds;
 
   const indexOfLastAd = currentPage * adsPerPage;
   const indexOfFirstAd = indexOfLastAd - adsPerPage;
-  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd);
+  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd); // Ensure slicing is done after filtering
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

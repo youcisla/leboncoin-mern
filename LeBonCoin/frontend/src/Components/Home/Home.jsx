@@ -28,16 +28,18 @@ const Home = () => {
   const fetchAllAds = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/ads/all");
-      if (res.data && res.data.length > 0) {
+      if (res.data && Array.isArray(res.data)) {
         setAds(res.data);
         setAdCount(res.data.length);
       } else {
+        console.warn("Invalid response format", res.data);
         setAds([]);
         setAdCount(0);
       }
     } catch (err) {
-      console.error("Erreur récupération annonces", err);
-      setErrorMessage("Impossible de récupérer les annonces. Veuillez réessayer plus tard.");
+      console.error("Error fetching all ads", err);
+      setAds([]);
+      setAdCount(0);
     }
   };
 
@@ -58,13 +60,18 @@ const Home = () => {
         const userAdsRes = await axios.get("http://localhost:5000/api/ads/user", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("User ads response:", userAdsRes.data);
         setUserAdCount(userAdsRes.data.length);
       } catch (err) {
-        console.error("Erreur récupération utilisateur", err);
+        console.error("Error fetching user or user ads:", err);
       }
     };
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    console.log("userAdCount at render:", userAdCount);
+  }, [userAdCount]);
 
   const handleDelete = async (id) => {
     try {
@@ -145,14 +152,14 @@ const Home = () => {
 
   const filteredAds = filter
     ? ads.filter((ad) =>
-        ad.title.toLowerCase().includes(filter.toLowerCase()) ||
-        ad.category.toLowerCase().includes(filter.toLowerCase())
+        ad.title?.toLowerCase().includes(filter.toLowerCase()) ||
+        ad.category?.toLowerCase().includes(filter.toLowerCase())
       )
     : ads;
 
   const indexOfLastAd = currentPage * adsPerPage;
   const indexOfFirstAd = indexOfLastAd - adsPerPage;
-  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd);
+  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd); // Ensure slicing is done after filtering
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -178,37 +185,46 @@ const Home = () => {
             </h2>
             <button className="LeBonCoin-btn" onClick={() => setShowForm(true)}>Ajouter une annonce</button>
           </div>
-          <input
-            type="text"
-            placeholder="Filtrer par titre..."
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="form-control mb-4"
-          />
+          <div className="d-flex gap-3 mb-4">
+            <select
+              className="form-control LeBonCoin-btn"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            >
+              <option value="">Toutes les catégories</option>
+              <option value="Immobilier">Immobilier</option>
+              <option value="Véhicules">Véhicules</option>
+              <option value="Mode">Mode</option>
+              <option value="Électronique">Électronique</option>
+              <option value="Loisirs">Loisirs</option>
+              <option value="Autres">Autres</option>
+            </select>
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="form-control LeBonCoin-btn"
+            />
+          </div>
           <div className="row">
-            {currentAds.map((ad) => {
-              const sanitizedFileUrl = ad.fileUrl ? `http://localhost:5000${encodeURI(ad.fileUrl)}` : null;
-
-              return (
-                <div className="col-12 col-sm-6 col-lg-4 mb-4" key={ad._id}>
-                  <div className="LeBonCoin-card h-100">
-                    <div className="LeBonCoin-title" style={{ fontSize: 22 }}>{ad.title}</div>
-                    <div className="mb-2" style={{ color: "#a0ffa0" }}>{ad.category} — {ad.price} €</div>
-                    <div className="mb-2">{ad.description}</div>
-                    {sanitizedFileUrl && ad.fileType?.startsWith("image/") && (
-                      <img src={sanitizedFileUrl} alt="Visuel" className="img-fluid mb-2 rounded" />
-                    )}
-                    {sanitizedFileUrl && !ad.fileType?.startsWith("image/") && (
-                      <a href={sanitizedFileUrl} target="_blank" rel="noreferrer" className="btn btn-outline-light btn-sm mt-2">
-                        Voir le fichier
-                      </a>
-                    )}
-                    <button onClick={() => handleEdit(ad)} className="LeBonCoin-btn mt-3 w-100">Modifier</button>
-                    <button className="LeBonCoinRed-btn" onClick={() => handleDelete(ad._id)}>Supprimer</button>
-                  </div>
+            {currentAds.map((ad) => (
+              <div className="col-12 col-sm-6 col-lg-4 mb-4" key={ad._id}>
+                <div className="LeBonCoin-card h-100">
+                  <div className="LeBonCoin-title" style={{ fontSize: 22 }}>{ad.title}</div>
+                  <div className="mb-2" style={{ color: '#a0ffa0' }}>{ad.category} — {ad.price} €</div>
+                  <div className="mb-2">{ad.description}</div>
+                  {ad.fileUrl && (
+                    <img
+                      src={`http://localhost:5000${ad.fileUrl}`}
+                      alt={ad.title}
+                      className="img-fluid mb-2"
+                      style={{ maxHeight: "200px", objectFit: "cover" }}
+                    />
+                  )}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
           <nav>
             <ul className="pagination justify-content-center">
@@ -248,6 +264,11 @@ const Home = () => {
             handleSubmit={editingAd ? handleUpdate : handleSubmit}
             handleCancel={() => {
               setEditingAd(null);
+              setTitle("");
+              setDescription("");
+              setCategory("");
+              setPrice("");
+              setFile(null);
               setShowForm(false);
             }}
           />

@@ -93,9 +93,12 @@ export const updateUser = async (req, res) => {
 
 export const getUserAds = async (req, res) => {
   try {
-    const userAds = await Ad.find({ userId: req.userId });
+    console.log("Fetching ads for userId:", req.userId);
+    const userAds = await Ad.find({ author: req.userId }); // Updated to query using 'author' field
+    console.log("Ads retrieved:", userAds);
     res.status(200).json(userAds);
   } catch (err) {
+    console.error("Error fetching user ads:", err);
     res.status(500).json({ error: "Erreur lors de la récupération des annonces utilisateur" });
   }
 };

@@ -11,9 +11,15 @@ const AllAds = () => {
     const fetchAds = async () => {
       try {
         const res = await axios.get('http://localhost:5000/api/ads/all');
-        setAds(res.data);
+        if (res.data && Array.isArray(res.data)) {
+          setAds(res.data);
+        } else {
+          console.warn("Invalid response format", res.data);
+          setAds([]);
+        }
       } catch (err) {
-        console.error('Erreur récupération annonces', err);
+        console.error("Error fetching all ads", err);
+        setAds([]);
       }
     };
 
@@ -22,14 +28,14 @@ const AllAds = () => {
 
   const filteredAds = filter
     ? ads.filter((ad) =>
-        ad.title.toLowerCase().includes(filter.toLowerCase()) ||
-        ad.category.toLowerCase().includes(filter.toLowerCase())
+        ad.title?.toLowerCase().includes(filter.toLowerCase()) ||
+        ad.category?.toLowerCase().includes(filter.toLowerCase())
       )
     : ads;
 
   const indexOfLastAd = currentPage * adsPerPage;
   const indexOfFirstAd = indexOfLastAd - adsPerPage;
-  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd);
+  const currentAds = filteredAds.slice(indexOfFirstAd, indexOfLastAd); // Ensure slicing is done after filtering
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
